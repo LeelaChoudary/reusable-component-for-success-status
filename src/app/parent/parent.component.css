@@ -1,0 +1,9 @@
+.pending {
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-weight: 500;
+  display: inline-block;
+}
