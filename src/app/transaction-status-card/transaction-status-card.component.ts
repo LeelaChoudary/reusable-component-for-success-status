@@ -5,16 +5,23 @@ import { FormsModule } from '@angular/forms';
 export interface DetailField {
   label: string;
   value: string;
-  valueBgColor?: string;
-  valueTextColor?: string;
-  valueIsBadge?: boolean;
   subtext?: string;
-  subtextBgColor?: string;
-  subtextTextColor?: string;
-  badgeStyle?: boolean;
-  badgeClass?: string;
+
+  labelValueStyle?: 'badge' | 'rectangularbg'; // Controls style of value
 }
 
+
+
+export interface CardHeaderData {
+  title: string;
+  subtitle?: string;
+  statusIcon?: string;
+  statusBgColor?: string;
+
+  rightLabel?: string;
+  rightValue?: string;
+  rightSubtext?: string;
+}
 @Component({
   selector: 'app-transaction-status-card',
   templateUrl: './transaction-status-card.component.html',
@@ -22,14 +29,9 @@ export interface DetailField {
   styleUrls: ['./transaction-status-card.component.css']
 })
 export class TransactionStatusCardComponent {
-  @Input() statusTitle: string = '';
-  @Input() statusSubtitle: string = '';
-  @Input() tickIconPath: string = 'assets/icons/tick.png';
-  @Input() statusBgColor:string='';
+  @Input() cardHeaderData!: CardHeaderData;
 
-  @Input() rightMetaLabel?: string;
-  @Input() rightMetaValue?: string;
-  @Input() rightMetaSubtext?: string;
+
 
   @Input() details: DetailField[] = [];
 

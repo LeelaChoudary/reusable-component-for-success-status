@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 // import { DetailField } from '../detail-filed.interface';
-import { DetailField } from '../transaction-status-card/transaction-status-card.component';
+import { CardHeaderData, DetailField } from '../transaction-status-card/transaction-status-card.component';
 import { TransactionStatusCardComponent } from "../transaction-status-card/transaction-status-card.component";
 
 @Component({
@@ -10,11 +10,17 @@ import { TransactionStatusCardComponent } from "../transaction-status-card/trans
    styleUrls: ['./parent.component.css']
 })
 export class ParentComponent {
-  cardTitle = 'Scheduled Payment';
-  cardSubtitle = 'Submitted for Authorization';
 
-  statusIconPath = 'assets/icons/tick.png';
-  statusBgColor = '#d4edda'; // Light green
+  cardHeaderData: CardHeaderData = {
+  title: 'Scheduled Payment',
+  subtitle: 'Submitted for Authorization',
+  statusIcon: 'assets/icons/tick.png',
+  statusBgColor: '#d4edda',
+  rightLabel: 'Transaction ID',
+  rightValue: 'TRX00009172810',
+  rightSubtext: 'Processed on 25 July 2025'
+};
+
 
   showDownload = true;
   showPrint = false;
@@ -23,28 +29,40 @@ export class ParentComponent {
   infoMessage = 'The transaction e-checks will automatically expire if no action is taken within 10 days.';
   showInfoMessage = true;
 
-  metaLabel = 'Transaction ID';
-  metaValue = 'TRX00009172810';
-  metaSubtext = 'Processed on 25 July 2025';
 
-  details: DetailField[] = [
-    {
-      label: 'Payment Type',
-      value: 'Scheduled Later',
-      valueIsBadge: true,
-      valueBgColor: '#fcefc0',
-      valueTextColor: '#a67c00',
-      subtext: 'Will be paid on 20 May 2025, 9.20 AM'
-    },
-    {
-      label: 'Authorization Status',
-      value: 'PENDING',
-      badgeStyle: true,
-      badgeClass: 'pending'
-    },
-    {
-      label: 'Bank Name',
-      value: 'Axis Bank'
-    }
-  ];
+
+  
+details: DetailField[] = [
+  {
+    label: 'Payment Type',
+    value: 'Scheduled Later',
+    labelValueStyle: 'rectangularbg',
+    subtext: 'Will be paid on 20 May 2025, 9.20 AM'
+  },
+  {
+    label: 'Authorization Status',
+    value: 'PENDING',
+    labelValueStyle: 'badge'
+  },
+  {
+    label: 'Bank Name',
+    value: 'Axis Bank'
+  },
+   {
+    label: 'Payment Type',
+    value: 'Scheduled Later',
+    labelValueStyle: 'rectangularbg',
+    subtext: 'Will be paid on 20 May 2025, 9.20 AM'
+  },
+  {
+    label: 'Authorization Status',
+    value: 'PENDING',
+    labelValueStyle: 'badge'
+  },
+  {
+    label: 'Bank Name',
+    value: 'Axis Bank'
+  }
+];
+
 }

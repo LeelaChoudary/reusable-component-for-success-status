@@ -1,34 +1,31 @@
-<div class="card shadow-sm rounded overflow-hidden">
+<div class="card shadow-sm rounded-4 overflow-hidden">
   <!-- Header Section -->
   <div class="d-flex justify-content-between align-items-start p-3" style="background-color: green; color: white">
     <div>
       <h5 class="mb-1">
-        <img [src]="tickIconPath" alt="Success" width="18" class="me-2" />
-        {{ statusTitle }}
+        <img [src]="cardHeaderData.statusIcon" alt="Success" width="18" class="me-2" />
+        {{ cardHeaderData.title }}
       </h5>
-      <small>{{ statusSubtitle }}</small>
+      <small>{{ cardHeaderData.subtitle }}</small>
     </div>
-    <div *ngIf="rightMetaLabel || rightMetaValue" class="text-end small">
-      <div *ngIf="rightMetaLabel" class="fw-light">{{ rightMetaLabel }}</div>
-      <div *ngIf="rightMetaValue" class="fw-semibold">{{ rightMetaValue }}</div>
-      <div *ngIf="rightMetaSubtext">{{ rightMetaSubtext }}</div>
+    <div *ngIf="cardHeaderData?.rightLabel || cardHeaderData?.rightValue" class="text-end small">
+      <div class="fw-light">{{ cardHeaderData.rightLabel }}</div>
+      <div class="fw-semibold">{{ cardHeaderData.rightValue }}</div>
+      <div>{{ cardHeaderData.rightSubtext }}</div>
     </div>
   </div>
 
   <!-- Details Section -->
   <div class="p-3">
     <div class="row">
-      <div class="col-md-6 mb-3" *ngFor="let field of details">
-        <div class="text-muted small">{{ field.label }}</div>
+      @for (item of details; track item.label) {
+      <div class="col-md-6 mb-3">
+        <div class="text-muted small">{{ item.label }}</div>
         <div>
-          <span
-            *ngIf="field.valueIsBadge"
-            class="px-2 py-1 rounded d-inline-block fw-medium"
-            [ngStyle]="{
+          <!-- <span *ngIf="field.valueIsBadge" class="px-2 py-1 rounded d-inline-block fw-medium" [ngStyle]="{
               'background-color': field.valueBgColor || '#f8f9fa',
               'color': field.valueTextColor || '#212529'
-            }"
-          >
+            }">
             {{ field.value }}
           </span>
 
@@ -38,9 +35,16 @@
 
           <span *ngIf="!field.valueIsBadge && !field.badgeStyle" class="fw-medium">
             {{ field.value }}
-          </span>
-
-          <div
+          </span> -->
+          <ng-container [ngSwitch]="item.labelValueStyle">
+            <span *ngSwitchCase="'badge'" class="value-badge">{{ item.value }}</span>
+            <span *ngSwitchCase="'rectangularbg'" class="value-rectangular">{{ item.value }}</span>
+            <span *ngSwitchDefault class="fw-semibold">{{ item.value }}</span>
+          </ng-container>
+          @if (item.subtext) {
+          <div class="text-muted small mt-1">{{ item.subtext }}</div>
+          }
+          <!-- <div
             *ngIf="field.subtext"
             class="rounded mt-1 px-2 py-1 d-inline-block small"
             [ngStyle]="{
@@ -49,17 +53,27 @@
             }"
           >
             {{ field.subtext }}
-          </div>
+          </div> -->
         </div>
       </div>
+      }
     </div>
 
-    <!-- Save Icons -->
-    <div class="d-flex align-items-center gap-3 mt-3">
-      <i *ngIf="showPrintIcon" class="bi bi-printer" role="button" (click)="onPrint()"></i>
-      <i *ngIf="showDownloadIcon" class="bi bi-download" role="button" (click)="onDownload()"></i>
-      <i *ngIf="showMailIcon" class="bi bi-envelope" role="button" (click)="onMail()"></i>
-    </div>
+  <!-- Save Icons -->
+<div class="d-flex align-items-center gap-3 mt-3">
+  @if (showPrintIcon) {
+    <img src="assets/icons/print.png" alt="Print" width="20" height="20" role="button" (click)="onPrint()" />
+  }
+
+  @if (showDownloadIcon) {
+    <img src="assets/icons/download.png" alt="Download" width="20" height="20" role="button" (click)="onDownload()" />
+  }
+
+  @if (showMailIcon) {
+    <img src="assets/icons/mail.png" alt="Mail" width="20" height="20" role="button" (click)="onMail()" />
+  }
+</div>
+
 
     <!-- Info Message -->
     <div *ngIf="infoMessage" class="d-flex align-items-start mt-3 text-muted small">
@@ -67,4 +81,4 @@
       <span>{{ infoMessage }}</span>
     </div>
   </div>
-</div>
+  </div>
