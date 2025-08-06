@@ -1,0 +1,63 @@
+<div class="dynamic-form-wrapper">
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="p-3">
+  <div class="row g-3">
+    @for (field of config; track field.param) {
+      <div class="col-md-6">
+        <label class="form-label">{{ field.labelField }}</label>
+
+        @if (field.labelType === 'text') {
+          <input type="text" class="form-control" [formControlName]="field.param" />
+        }
+
+        @if (field.labelType === 'dropdown') {
+          <select class="form-select" [formControlName]="field.param">
+            <option value="">Select {{ field.labelField }}</option>
+            @for (option of field.labelValue ?? []; track option.value) {
+              <option [value]="option.value">{{ option.label }}</option>
+            }
+          </select>
+        }
+
+        @if (field.labelType === 'radio') {
+          <div class="form-check form-check-inline">
+               @for(option of field.labelValue ?? []; track option.value){
+            <input type="radio"
+                   class="form-check-input"
+                   [value]="option.value"
+                   [id]="field.param + option.value"
+                   [formControlName]="field.param" />
+            <label class="form-check-label" [for]="field.param + option.value">
+              {{ option.label }}
+            </label>
+        }
+          </div>
+        }
+
+        <!-- @if (field.labelType === 'checkbox') {
+          <div class="form-check"
+               @for (option of field.labelValue ?? []; track option.value)>
+            <input type="checkbox"
+                   class="form-check-input"
+                   [id]="field.param + option.value"
+                   [value]="option.value"
+                   [checked]="form.get(field.param)?.value?.includes(option.value)"
+                   (change)="onCheckboxChange($event, field.param)" />
+            <label class="form-check-label" [for]="field.param + option.value">
+              {{ option.label }}
+            </label>
+          </div>
+        }
+
+        @if (field.labelType === 'date') {
+          <input type="date" class="form-control" [formControlName]="field.param" />
+        } -->
+
+      </div>
+    }
+  </div>
+
+  <div class="mt-4">
+    <button class="btn btn-primary" type="submit">Submit</button>
+  </div>
+</form>
+</div>
