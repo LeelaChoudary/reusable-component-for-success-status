@@ -50,7 +50,8 @@ export class DynamicFormParentComponent {
         { label: 'With Bill', value: 'with' },
         { label: 'Without Bill', value: 'without' }
       ]
-    }
+    },
+    
   ];
 
   onFormSubmit(data: any): void {

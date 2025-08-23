@@ -1,0 +1,26 @@
+<p>biller-table works!</p>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Biller Name</th>
+      <th>Customer ID</th>
+      <th>Location</th>
+      <th>Nick Name</th>
+      <th>Contact</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of billerList">
+      <td>{{ row.billerName }}</td>
+      <td>{{ row.customerId }}</td>
+      <td>{{ row.location }}</td>
+      <td>{{ row.nickName }}</td>
+      <td>{{ row.contact }}</td>
+      <td>
+        <button class="btn btn-sm btn-primary" (click)="onEdit(row)">Edit</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+

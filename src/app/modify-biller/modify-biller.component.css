@@ -1,0 +1,17 @@
+/* subtle card look to match the screenshot */
+.modify-biller .card {
+  border-radius: 16px;
+}
+
+.modify-biller .card-header h5 {
+  color: #2b2b2b;
+}
+
+.modify-biller .btn-primary {
+  background-color: #6f42c1; /* purple-ish */
+  border-color: #6f42c1;
+}
+.modify-biller .btn-primary:hover {
+  background-color: #5a34a0;
+  border-color: #5a34a0;
+}

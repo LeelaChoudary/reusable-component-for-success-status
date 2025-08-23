@@ -1,0 +1,129 @@
+<p>modify-biller works!</p>
+<div class="card-header bg-white border-0 pt-4 pb-0">
+    <h5 class="mb-0 fw-semibold">Modify Biller</h5>
+</div>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="modify-biller">
+    <div class="card shadow-sm m-3">
+            <!-- Biller name (read-only strip) -->
+            <div class="mb-3">
+                <div class="rounded px-3 py-2">
+                    <div class="text-muted small">Biller Name</div>
+                    <div class="fs-6 fw-semibold">{{ selectedRow?.billerName }}</div>
+                </div>
+            </div>
+
+            <div class="row g-4 p-3">
+                <!-- Customer ID -->
+                <div class="col-md-6">
+                    <label class="form-label">Customer ID / Relationship ID</label>
+                    <input type="text" class="form-control" formControlName="customerId"
+                        [ngClass]="{ 'is-invalid': isInvalid('customerId') }" maxlength="20"
+                        placeholder="Enter Customer ID" />
+                    <div class="invalid-feedback" *ngIf="f['customerId'].errors?.['required']">
+                        Customer ID is required.
+                    </div>
+                    <div class="invalid-feedback" *ngIf="f['customerId'].errors?.['maxlength']">
+                        Maximum 20 characters allowed.
+                    </div>
+                </div>
+
+                <!-- Location -->
+                <div class="col-md-6">
+                    <label class="form-label">Location</label>
+                    <select class="form-select" formControlName="location"
+                        [ngClass]="{ 'is-invalid': isInvalid('location') }">
+                        <option value="" disabled>Select City, State</option>
+                        <option *ngFor="let opt of locationOptions" [value]="opt">{{ opt }}</option>
+                    </select>
+                    <div class="invalid-feedback">Location is required.</div>
+                </div>
+
+                <!-- Nick Name -->
+                <div class="col-md-6">
+                    <label class="form-label">Nick Name</label>
+                    <input type="text" class="form-control" formControlName="nickName"
+                        [ngClass]="{ 'is-invalid': isInvalid('nickName') }" maxlength="20"
+                        placeholder="Enter Nick Name" />
+                    <div class="invalid-feedback" *ngIf="f['nickName'].errors?.['required']">
+                        Nick Name is required.
+                    </div>
+                    <div class="invalid-feedback" *ngIf="f['nickName'].errors?.['maxlength']">
+                        Maximum 20 characters allowed.
+                    </div>
+                </div>
+
+                <!-- Contact -->
+                <div class="col-md-6">
+                    <label class="form-label">Contact</label>
+                    <input type="text" class="form-control" formControlName="contact"
+                        [ngClass]="{ 'is-invalid': isInvalid('contact') }" placeholder="+91 98XXXXXXXX" />
+                    <div class="invalid-feedback" *ngIf="f['contact'].errors?.['required']">
+                        Contact number is required.
+                    </div>
+                    <div class="invalid-feedback" *ngIf="f['contact'].errors?.['phoneLength'] as e">
+                        Must contain {{e.requiredMin}}–{{e.requiredMax}} digits (spaces allowed).
+                    </div>
+                </div>
+
+                <!-- Mapped Debit Account (read-only + link) -->
+                <div class="col-md-6">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="form-label mb-1">Mapped Debit Account</div>
+                            <div class="fw-semibold">{{ selectedRow?.currentAccount }}</div>
+                        </div>
+                        <button type="button" class="btn btn-link p-0" (click)="openChangeAccount()">
+                            Change Account
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Branch (read-only) -->
+                <div class="col-md-6">
+                    <div class="form-label mb-1">Branch</div>
+                    <div class="fw-semibold">{{ selectedRow?.branch }}</div>
+                </div>
+
+                <!-- Current Balance (read-only) -->
+                <div class="col-md-6">
+                    <div class="form-label mb-1">Current Balance</div>
+                    <div class="fw-semibold">₹ {{ selectedRow?.currentBalance | number:'1.2-2' }}</div>
+                </div>
+
+                <!-- Autopay toggle -->
+                <div class="col-md-6">
+                    <label class="form-label d-block">Autopay</label>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch"
+                            formControlName="autopayEnabled" />
+                        <label class="form-check-label">
+                            {{ f['autopayEnabled'].value ? 'Enabled' : 'Disabled' }}
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Autopay Limit -->
+                <div class="col-md-6">
+                    <label class="form-label">Autopay Limit</label>
+                    <div class="input-group">
+                        <span class="input-group-text">₹</span>
+                        <input type="number" class="form-control" formControlName="autopayLimit"
+                            [ngClass]="{ 'is-invalid': isInvalid('autopayLimit') }" min="1" step="1"
+                            placeholder="Enter limit" />
+                        <div class="invalid-feedback">
+                            {{ f['autopayEnabled'].value ? 'Required (min ₹1).' : 'Enable Autopay to set a limit.' }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <div class="card-footer bg-white border-0 d-flex justify-content-end gap-2 py-3">
+            <button type="button" class="btn btn-outline-secondary" (click)="onCancel()">Cancel</button>
+            <button type="submit" class="btn btn-primary px-4">Proceed</button>
+        </div>
+    </div>
+</form>
+
+<app-change-account-dialog *ngIf="showChangeAccount" (accountSelected)="onAccountSelected($event)"
+    (closed)="onDialogClosed()">
+</app-change-account-dialog>

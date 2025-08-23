@@ -1,0 +1,43 @@
+<p>change-account-dialog works!</p>
+<div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Select Account</h5>
+        <button type="button" class="btn-close" (click)="closeDialog()"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-hover align-middle">
+          <thead>
+            <tr>
+              <th>Branch</th>
+              <th>Account No</th>
+              <th>Balance</th>
+              <th>Autopay</th>
+              <th>Autopay Limit</th>
+              <th>Select</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let acc of accounts">
+              <td>{{ acc.branch }}</td>
+              <td>{{ acc.currentAccount }}</td>
+              <td>₹ {{ acc.currentBalance  }}</td>
+              <td>{{ acc.autopayEnabled ? 'Enabled' : 'Disabled' }}</td>
+              <td>{{ acc.autopayEnabled ? acc.autopayLimit : '-' }}</td>
+              <td>
+                <input type="radio" name="selectedAccount" (change)="selectAccount(acc)" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" (click)="closeDialog()">Cancel</button>
+        <button class="btn btn-primary" (click)="confirmSelection()" [disabled]="!selectedAccount">
+          Confirm
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
