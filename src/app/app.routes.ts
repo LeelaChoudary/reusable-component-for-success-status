@@ -13,19 +13,27 @@ export const routes: Routes = [
         path: 'dynamic-form',
         loadComponent: () => import('./dynamic-form-parent/dynamic-form-parent.component').then(c => c.DynamicFormParentComponent)
     },
-       {
+    {
         path: 'modify-biller',
         loadComponent: () => import('./modify-biller/modify-biller.component').then(c => c.ModifyBillerComponent)
     },
-         {
+    {
         path: 'biller-table',
         loadComponent: () => import('./biller-table/biller-table.component').then(c => c.BillerTableComponent)
     },
-           {
+    {
         path: 'verify-biller',
         loadComponent: () => import('./verify-biller/verify-biller.component').then(c => c.VerifyBillerDetailsComponent)
     },
     {
-        path: '', redirectTo: '/biller-table', pathMatch: 'full'
+        path: 'dynamic-from-sample',
+        loadComponent: () => import('./dynamic-forms-sample-app/dynamic-forms-sample-app.component').then(c => c.DynamicFormsSampleAppComponent)
+    },
+    {
+        path: 'demo-form',
+        loadComponent: () => import('./demo/demo.component').then(c => c.DemoComponent)
+    },
+    {
+        path: '', redirectTo: '/demo-form', pathMatch: 'full'
     }
 ];
