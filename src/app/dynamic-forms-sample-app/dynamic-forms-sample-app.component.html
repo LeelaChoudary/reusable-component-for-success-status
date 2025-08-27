@@ -1,0 +1,25 @@
+<p>dynamic-forms-sample-app works!</p>
+
+<form [formGroup]="dynamicForm" (ngSubmit)="submitForm()">
+    <div>
+        <label for="">Name</label>
+        <input type="text" formControlName="name">
+    </div>
+    <div>
+        <label for="">Email</label>
+        <input type="text" formControlName="email">
+    </div>
+    <div formArrayName="fields">
+        @for(f of fields.controls; let i=$index;track f){
+        <div [formGroupName]="i">
+            <label for="">Label</label>
+            <input type="text" formControlName="label">
+            <label for="">Value</label>
+            <input type="text" formControlName="value">
+            <button type="button" (click)="removeField(i)">Remove</button>
+        </div>
+        }
+    </div>
+    <button type="button" (click)="addField()">Add Fields</button>
+    <button type="submit">submit</button>
+</form>
