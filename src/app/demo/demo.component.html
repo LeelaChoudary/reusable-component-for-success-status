@@ -1,49 +1,128 @@
 <p>demo works!</p>
 <form [formGroup]="dynamicForm" (ngSubmit)="onSubmit()">
-    <!-- Render initial fields from the first API call -->
-    <div *ngFor="let field of formConfig">
-        <div [ngSwitch]="field.type">
-            <div *ngSwitchCase="'text'">
-                <label>{{ field.label }}</label>
-                <input type="text" [formControlName]="field.name" [placeholder]="field.placeholder">
-            </div>
-            <div *ngSwitchCase="'email'">
-                <label>{{ field.label }}</label>
-                <input type="email" [formControlName]="field.name">
-            </div>
-            <div *ngSwitchCase="'select'">
-                <label>{{ field.label }}</label>
-                <select [formControlName]="field.name">
-                    <option value="">Select...</option>
-                    <option *ngFor="let option of field.options" [value]="option.key">{{ option.value }}</option>
-                </select>
-            </div>
-        </div>
-        <div *ngIf="dynamicForm.controls[field.name].invalid && dynamicForm.controls[field.name].touched"
-            class="text-danger">
-            {{ field.label }} is required.
-        </div>
-    </div>
-
-    <!-- Render dynamic fields based on the businesslineid selection -->
-    <div *ngIf="dynamicFields.length > 0">
-        <h3>Dynamic Fields</h3>
-        <div *ngFor="let field of dynamicFields">
-            <div [ngSwitch]="field.type">
-                <div *ngSwitchCase="'text'">
-                    <label>{{ field.label }}</label>
-                    <input type="text" [formControlName]="field.name">
-                </div>
-                <div *ngSwitchCase="'select'">
-                    <label>{{ field.label }}</label>
-                    <select [formControlName]="field.name">
-                        <option value="">Select...</option>
-                        <option *ngFor="let option of field.options" [value]="option.key">{{ option.value }}</option>
-                    </select>
+    <div class="row">
+        <!-- Render initial fields from the first API call -->
+        <ng-container *ngFor="let field of formConfig">
+            <div class="col-12" *ngIf="field.type === 'textarea'">
+                <div [ngSwitch]="field.type">
+                    <div *ngSwitchCase="'textarea'">
+                        <label>{{ field.label }}</label>
+                        <textarea [formControlName]="field.name" [placeholder]="field.placeholder"
+                            class="form-control"></textarea>
+                        <div *ngIf="dynamicForm.get(field.name)?.invalid && dynamicForm.get(field.name)?.touched"
+                            class="text-danger">
+                            {{ field.label }} is required.
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
+            <!-- Default to col-6 for all other fields -->
+            <div class="col-md-6" *ngIf="field.type !== 'textarea'">
+                <div [ngSwitch]="field.type">
+                    <div *ngSwitchCase="'text'">
+                        <label>{{ field.label }}</label>
+                        <input type="text" [formControlName]="field.name" [placeholder]="field.placeholder"
+                            class="form-control">
+                        <div *ngIf="dynamicForm.get(field.name)?.invalid && dynamicForm.get(field.name)?.touched"
+                            class="text-danger">
+                            {{ field.label }} is required.
+                        </div>
+                    </div>
+                    <div *ngSwitchCase="'email'">
+                        <label>{{ field.label }}</label>
+                        <input type="email" [formControlName]="field.name" class="form-control">
+                        <div *ngIf="dynamicForm.get(field.name)?.invalid && dynamicForm.get(field.name)?.touched"
+                            class="text-danger">
+                            {{ field.label }} is required.
+                        </div>
+                    </div>
+                    <div *ngSwitchCase="'select'">
+                        <label>{{ field.label }}</label>
+                        <select [formControlName]="field.name" class="form-control">
+                            <option value="">Select...</option>
+                            <option *ngFor="let option of field.options" [value]="option.key">{{ option.value }}
+                            </option>
+                        </select>
+                        <div *ngIf="dynamicForm.get(field.name)?.invalid && dynamicForm.get(field.name)?.touched"
+                            class="text-danger">
+                            {{ field.label }} is required.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div *ngIf="dynamicForm.controls[field.name].invalid && dynamicForm.controls[field.name].touched"
+                class="text-danger">
+                {{ field.label }} is required.
+            </div> -->
+        </ng-container>
 
+        <!-- Render dynamic fields based on the businesslineid selection -->
+        <ng-container *ngIf="dynamicFields.length > 0">
+            <!-- <h3>Dynamic Fields</h3> -->
+            <div *ngFor="let field of dynamicFields" class="col-md-6">
+                <div [ngSwitch]="field.type">
+                    <div *ngSwitchCase="'text'">
+                        <label>{{ field.label }}</label>
+                        <input type="text" [formControlName]="field.name">
+                        <div *ngIf="dynamicForm.get(field.name)?.invalid && dynamicForm.get(field.name)?.touched"
+                            class="text-danger">
+                            {{ field.label }} is required.
+                        </div>
+                    </div>
+                    <div *ngSwitchCase="'select'">
+                        <label>{{ field.label }}</label>
+                        <select [formControlName]="field.name">
+                            <option value="">Select...</option>
+                            <option *ngFor="let option of field.options" [value]="option.key">{{ option.value }}
+                            </option>
+                        </select>
+                        <div *ngIf="dynamicForm.get(field.name)?.invalid && dynamicForm.get(field.name)?.touched"
+                            class="text-danger">
+                            {{ field.label }} is required.
+                        </div>
+                    </div>
+                </div>
+                <!-- <div *ngIf="dynamicForm.controls[field.name].invalid && dynamicForm.controls[field.name].touched"
+                    class="text-danger">
+                    {{ field.label }} is required.
+                </div> -->
+            </div>
+        </ng-container>
+
+        <!-- Render static fields -->
+        <ng-container *ngFor="let field of staticFields">
+            <!-- Full-width for textareas -->
+            <div class="col-12" *ngIf="field.type === 'textarea'">
+                <div [ngSwitch]="field.type">
+                    <div *ngSwitchCase="'textarea'">
+                        <label>{{ field.label }}</label>
+                        <textarea [formControlName]="field.name" [placeholder]="field.placeholder"
+                            class="form-control"></textarea>
+                        <div *ngIf="dynamicForm.get(field.name)?.invalid && dynamicForm.get(field.name)?.touched"
+                            class="text-danger">
+                            {{ field.label }} is required.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- col-md-6 for other static fields -->
+            <div class="col-md-6" *ngIf="field.type !== 'textarea'">
+                <div [ngSwitch]="field.type">
+                    <div *ngSwitchCase="'select'">
+                        <label>{{ field.label }}</label>
+                        <select [formControlName]="field.name" class="form-control">
+                            <option value="">Select...</option>
+                            <option *ngFor="let option of field.options" [value]="option.key">{{ option.value }}
+                            </option>
+                        </select>
+                        <div *ngIf="dynamicForm.get(field.name)?.invalid && dynamicForm.get(field.name)?.touched"
+                            class="text-danger">
+                            {{ field.label }} is required.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
     <button type="submit" [disabled]="dynamicForm.invalid">Submit</button>
 </form>
