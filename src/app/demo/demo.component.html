@@ -88,7 +88,26 @@
                 </div> -->
             </div>
         </ng-container>
-
+        <!-- Render static payment option -->
+        <div class="col-12 mt-3">
+            <h3>Select Payment Option</h3>
+            <div>
+                <button type="button" (click)="setPaymentOption('paynow')" class="btn"
+                    [class.btn-primary]="dynamicForm.get('selectPaymentOption')?.value === 'paynow'"
+                    [class.btn-outline-primary]="dynamicForm.get('selectPaymentOption')?.value !== 'paynow'">
+                    Pay Now
+                </button>
+                <button type="button" (click)="setPaymentOption('schedulelater')" class="btn ml-2"
+                    [class.btn-primary]="dynamicForm.get('selectPaymentOption')?.value === 'schedulelater'"
+                    [class.btn-outline-primary]="dynamicForm.get('selectPaymentOption')?.value !== 'schedulelater'">
+                    Schedule Later
+                </button>
+                <div *ngIf="dynamicForm.get('selectPaymentOption')?.invalid && dynamicForm.get('selectPaymentOption')?.touched"
+                    class="text-danger">
+                    Payment option is required.
+                </div>
+            </div>
+        </div>
         <!-- Render static fields -->
         <ng-container *ngFor="let field of staticFields">
             <!-- Full-width for textareas -->
@@ -123,6 +142,7 @@
                 </div>
             </div>
         </ng-container>
+
     </div>
     <button type="submit" [disabled]="dynamicForm.invalid">Submit</button>
 </form>

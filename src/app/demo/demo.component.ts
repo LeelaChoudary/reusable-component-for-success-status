@@ -84,16 +84,24 @@ export class DemoComponent implements OnInit {
     }
   ];
   dynamicFields: FormField[] = [];
+  showScheduleFields = false;
   // Define fields that can trigger the dependent API call
   private potentialDependentFieldNames = ['customerId', 'businesslineid'];
   constructor(private fb: FormBuilder, private apiService: BillerService) {
-    this.dynamicForm = this.fb.group({});
+    // Set the default value for the payment option in the form group initialization
+    this.dynamicForm = this.fb.group({
+      selectPaymentOption: ['paynow', Validators.required]
+    });
   }
 
   ngOnInit() {
     this.loadInitialFormConfig();
     // this.buildInitialForm();
     // this.setupDependentFields();
+    this.dynamicForm.get('selectPaymentOption')?.valueChanges.subscribe(option => {
+      this.showScheduleFields = option === 'schedulelater';
+      this.updateScheduleFields(this.showScheduleFields);
+    });
   }
   loadInitialFormConfig() {
     this.apiService.getInitialFormConfig().pipe(
@@ -104,6 +112,15 @@ export class DemoComponent implements OnInit {
     ).subscribe(() => {
       setTimeout(() => this.setupDependentFields(), 0);
     });
+  }
+  updateScheduleFields(show: boolean) {
+    if (show) {
+      this.dynamicForm.addControl('scheduleDate', this.fb.control('', Validators.required));
+      this.dynamicForm.addControl('scheduleTime', this.fb.control('', Validators.required));
+    } else {
+      this.dynamicForm.removeControl('scheduleDate');
+      this.dynamicForm.removeControl('scheduleTime');
+    }
   }
   buildInitialForm() {
     [...this.formConfig, ...this.staticFields].forEach(field => {
@@ -173,7 +190,9 @@ export class DemoComponent implements OnInit {
       this.dynamicForm.addControl(field.name, this.fb.control('', validators));
     });
   }
-
+ public setPaymentOption(option: string) {
+    this.dynamicForm.get('selectPaymentOption')?.setValue(option);
+  }
   onSubmit() {
     console.log(this.dynamicForm.value);
   }
